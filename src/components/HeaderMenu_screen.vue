@@ -1,7 +1,7 @@
 <template>
     <div id="HeaderMenu">
         <div class="Header">
-            <!-- <el-header> -->
+            <el-header>
                 <el-select v-model="value" clearable placeholder="メニュー">
                     <el-option 
                         v-for="item in options"
@@ -11,7 +11,7 @@
                         :disabled="item.disabled">
                     </el-option>
                 </el-select>
-            <!-- </el-header> -->
+            </el-header>
         </div>
     </div>
 </template>
