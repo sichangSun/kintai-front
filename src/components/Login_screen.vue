@@ -1,20 +1,22 @@
 <template>
     <div class="frame">
         <title></title>
-        <div>
+        <div class="login_id">
             <!-- ログインID入力 -->
             <label for="login" id="login_id">ログインID</label>
             <input type="text" name="login_id" v-model="login_id"/>
         </div>
-        <div>
+        <div class="password_id">
             <!-- パスワード入力 -->
-            <label for="password" id="password_id">パスワード</label>
+            <label for="password" id="password_id">パスワード </label>
             <input type="password" name="password" v-model="password"/>
             <!-- エラーメッセージ -->
             <div class="error_message" v-show="ErrorState" >{{ ErrorMessage }}</div>
         </div>
+        <div class="login_btn">
             <!-- ログインボタン -->
             <button @click="login()" id="login_btn">ログイン</button>
+        </div>
     </div>
 </template>
 
@@ -46,6 +48,15 @@ export default {
 </script>
 
 <style>
+.login_id{
+    text-align: center;
+}
+.password_id{
+    text-align: center;
+}
+.login_btn{
+    text-align: center;
+}
 .error_message {
     color: red;
 }
