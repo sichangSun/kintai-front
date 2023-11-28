@@ -1,24 +1,21 @@
 <template>
-    <div id="HeaderMenu">
-        <div class="Header">
-            <el-header>
-                <el-select class="in_Header" v-model="value" clearable placeholder="メニュー">
-                    <el-option 
-                        v-for="item in options"
-                        :key="item.value"
-                        :label="item.label"
-                        :value="item.value"
-                        :disabled="item.disabled">
-                    </el-option>
-                </el-select>
-            </el-header>
-        </div>
+    <div id="HeaderMenu" class="Header">
+        <el-header>
+            <el-select class="in_Header" v-model="value" clearable placeholder="メニュー">
+                <el-option 
+                    v-for="item in options"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value"
+                    :disabled="item.disabled">
+                </el-option>
+            </el-select>
+        </el-header>
     </div>
 </template>
 
 <script>
 export default {
-    el: '#HeaderManu',
     name: 'HeaderMenu_screen',
     data() {
         return {
@@ -46,20 +43,5 @@ export default {
 }
 .el-header{
     line-height: 60px;
-}
-
-
-table{
-  width: 80%;
-  margin: auto;
-}
-th{
-  width: 15%;
-  border:solid 1px #aaaaaa;
-}
-
-td{
-  width: 30%;
-  border:solid 1px #aaaaaa;
 }
 </style>
