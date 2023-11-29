@@ -23,7 +23,7 @@
         </div>
         <Record_screen/>
         <div class="btns">
-            <button></button><button></button><button></button>
+            <button>本月の確定を戻す</button><button>管理者用メイン画面に戻る</button><button>メイン画面に戻る</button>
         </div>
     </div>
 </template>
@@ -61,7 +61,12 @@ td{
   border:solid 1px #aaaaaa;
 }
 
+button{
+    margin: 20px;
+}
+
 .btns{
-    margin: right;
+    position: relative;
+    left: 60%;
 }
 </style>
