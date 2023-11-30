@@ -3,6 +3,12 @@
     <!-- <img alt="Vue logo" src="./assets/logo.png"> -->
     <!-- <HelloWorld msg="Welcome to Your Vue.js App"/> -->
     <Login_screen />
+    <br/>
+    <br/>
+    <hr/>
+    <el-button @click="goInfoUpdateForm">基本資料編集</el-button>
+    <hr/>
+    <router-view/>
   </div>
 </template>
 
@@ -14,6 +20,11 @@ export default {
   name: 'App',
   components: {
     Login_screen
+  },
+  methods:{
+    goInfoUpdateForm(){
+      this.$router.push('/InfoUpdateForm')
+    }
   }
 }
 </script>
