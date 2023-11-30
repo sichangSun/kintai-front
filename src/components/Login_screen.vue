@@ -15,7 +15,7 @@
         </div>
         <div class="login_btn">
             <!-- ログインボタン -->
-            <button @click="login()" id="login_btn">ログイン</button>
+            <button @click="login" id="login_btn">ログイン</button>
         </div>
     </div>
 </template>
@@ -34,6 +34,7 @@ export default {
     methods: {
         // エラーチェック
         login() {
+
             if (this.login_id === "" || this.password === "") {
                 this.ErrorState = true;
                 this.ErrorMessage = "＊ログインID、またはパスワードが未入力です。";
@@ -41,6 +42,7 @@ export default {
             else {
                 this.ErrorState = false;
                 this.ErrorMessage = "";
+                this.$router.push('/HeaderMenu_screen')
             }
         }
     }

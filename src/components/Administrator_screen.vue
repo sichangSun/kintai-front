@@ -21,7 +21,27 @@
                 </table>
             </el-main>
         </div>
-        <Record_screen/>
+        <table>
+            <thead>
+                <tr>
+                    <td colspan="6" >＜2023/11/01＞～＜2023/11/30＞<button class="btn" @click="toggleContentEditable">{{ isContentEditable ? "編集終了" : "編集開始" }}</button></td>
+                </tr>
+                <tr>
+                    <th>日付</th><th>曜日</th><th>勤休</th><th>出勤</th><th>退勤</th><th>仕事内容</th>
+                </tr>
+            
+            </thead>
+            <tbody>
+                <tr v-for="item in items" :key="item">
+                    <td>{{ item.day }}</td>
+                    <td>{{ item.weeks }}</td>
+                    <td :contenteditable="isContentEditable.toString()" @input="update">{{ item.workrest }}</td>
+                    <td :contenteditable="isContentEditable.toString()" @input="update">{{ item.adwork }}</td>
+                    <td :contenteditable="isContentEditable.toString()" @input="update">{{ item.lvwork }}</td>
+                    <td :contenteditable="isContentEditable.toString()" @input="update">{{ item.note }}</td>
+                </tr>
+            </tbody>
+        </table>
         <div class="btns">
             <button>本月の確定を戻す</button><button>管理者用メイン画面に戻る</button><button>メイン画面に戻る</button>
         </div>
@@ -29,17 +49,70 @@
 </template>
 
 <script>
-import Record_screen from './Record_screen.vue';
 export default {
     name: 'Administrator_screen',
     data() {
         return {
-            
+            isContentEditable: false,
+            Confirm: "本月勤怠未確定",
+            items: [
+                { day: 1, weeks: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
+                { day: 1, weeks: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
+                { day: 1, weeks: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
+                { day: 1, weeks: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
+                { day: 1, weeks: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
+                { day: 1, weeks: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
+                { day: 1, weeks: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
+                { day: 1, weeks: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
+                { day: 1, weeks: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
+                { day: 1, weeks: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
+                { day: 1, weeks: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
+                { day: 1, weeks: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
+                { day: 1, weeks: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
+                { day: 1, weeks: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
+                { day: 1, weeks: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
+                { day: 1, weeks: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
+                { day: 1, weeks: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
+                { day: 1, weeks: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
+                { day: 1, weeks: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
+                { day: 1, weeks: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
+                { day: 1, weeks: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
+                { day: 1, weeks: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
+                { day: 1, weeks: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
+                { day: 1, weeks: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
+                { day: 1, weeks: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
+                { day: 1, weeks: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
+                { day: 1, weeks: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
+                { day: 1, weeks: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
+                { day: 1, weeks: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
+                { day: 1, weeks: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
+            ]
         }
     },
-    components: {
-        Record_screen
-    }
+    methods: {
+        ConfirmAlert() {
+            var result = confirm('本月の勤務時間を確定します\r確定後、編集することができなくなります。\r修正が必要になる場合、管理員までご連絡ください')
+
+            if (result) {
+                alert('提出完了');
+                this.isContentEditable = false;
+                this.Confirm = "本月勤怠確定";
+            }
+        },
+        toggleContentEditable() {
+            // contenteditableを切り替える
+            this.isContentEditable = !this.isContentEditable;
+
+            // 編集が有効になったら、セルにフォーカスを設定
+            if (this.isContentEditable) {
+                this.$refs.editableCell.focus();
+            }
+        },
+        update(event) {
+            // 編集中のテキストを更新
+            this.item.note = event.target.textContent;
+        }
+    },
 }
 </script>
 
