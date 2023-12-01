@@ -6,7 +6,7 @@
     <br/>
     <br/>
     <hr/>
-    <el-button @click="goInfoUpdateForm">基本資料編集</el-button>
+    <el-button @click="toggleInfoUpdateForm">基本資料編集</el-button>
     <hr/>
     <router-view/>
   </div>
@@ -21,9 +21,17 @@ export default {
   components: {
     Login_screen
   },
-  methods:{
-    goInfoUpdateForm(){
-      this.$router.push('/InfoUpdateForm')
+  methods: {
+    toggleInfoUpdateForm() {
+      // 获取当前路由路径
+      const currentRoute = this.$router.currentRoute.path;
+
+      // 如果当前路由是 InfoUpdateForm，则关闭表单
+      if (currentRoute === '/InfoUpdateForm') {
+        this.$router.push('/'); // 返回到首页或其他适当的路由
+      } else {
+        this.$router.push('/InfoUpdateForm'); // 打开表单
+      }
     }
   }
 }

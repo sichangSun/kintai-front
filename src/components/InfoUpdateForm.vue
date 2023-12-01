@@ -1,6 +1,6 @@
 <template>
 <!--  Form-->
-  <div id="InfoUpdateForm">
+  <div id="InfoUpdateForm" v-if="isVisible">
     <el-form label-position="left" :inline="true" :model="formInline" label-width="200px">
       <el-row>
         <el-col :span="11">
@@ -228,9 +228,9 @@
 <!--Button-->
     <el-row label-width="200px" class="right-aligned-button">
       <el-button @click="getFormData"> 测试 </el-button>
-      <el-button> キャンセル </el-button>
+      <el-button @click="cancelInfoUpdateForm" > キャンセル </el-button>
       <el-button> 管理画面に戻る </el-button>
-      <el-button type="primary"> 保存 </el-button>
+      <el-button type="primary" @click="confirmBox"> 保存 </el-button>
 
     </el-row>
   </div>
@@ -269,12 +269,41 @@ export default {
         kinkyuurenrakuoyasimei:'',
         kinkyuurenrakudenwa:''
       },
+      isVisible:true
     };
   },
   methods:{
     getFormData(){
       console.log('InfoUpdateForm',this.formInline)
-    }
+    },
+    confirmBox(){
+      this.$confirm('是否确定保存信息？','提示',{
+        confirmButtonText:'确定',
+        cancelButtonText:'取消',
+        type:'warning'
+          }
+      ).then(() => {
+        this.$message({
+          type:'success',
+          message:'保存成功！'
+        });
+        this.isVisible = false;
+        this.$router.push('/');
+      }).catch(() =>{
+        this.$message({
+          type:'info',
+          message:'已取消保存！'
+        })
+      });
+    },
+    cancelInfoUpdateForm(){
+      this.$router.push('/')
+    },
+    // 添加关闭 Dialog 的方法
+    closeDialog() {
+      // 触发自定义事件，通知父组件关闭 Dialog
+      this.$emit('closeDialog');
+    },
   }
 };
 </script>
@@ -288,13 +317,6 @@ export default {
 
 .custom-date-picker .el-date-editor {
   line-height: 40px; /* 调整日期选择框文本垂直对齐 */
-}
-
-.center-form {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh; /* 使容器铺满整个视口高度 */
 }
 
 .right-aligned-button {
