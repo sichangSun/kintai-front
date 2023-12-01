@@ -1,8 +1,8 @@
 <template>
     <div>
-        <p>This is Page 2 content.</p>
-        <div>
-              名前  社員番号 <li>{{ Confirm }}</li>
+        <HeaderMenu_screen/>
+        <div style="margin-top: 10px;">
+              名前  社員番号 {{ Confirm }}
         </div>
         <div class="Main">
             <el-main>
@@ -50,6 +50,9 @@
 </template>
 
 <script>
+import HeaderMenu_screen from './HeaderMenu_screen.vue';
+import axios from 'axios';
+
 export default {
     name: 'Employee_screen',
     data() {
@@ -58,10 +61,11 @@ export default {
             Confirm: "本月勤怠未確定",
             unbutton: false,
             items: [
-                { day: 1, weeks: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
-                { day: 1, weeks: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
-                { day: 1, weeks: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
-                { day: 1, weeks: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
+                { day: '', weeks: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },//この行をテストとする
+                { day: '', weeks: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },//この行をテストとする
+                { day: '', weeks: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },//この行をテストとする
+                { day: '', weeks: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },//この行をテストとする
+                { day: '', weeks: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },//この行をテストとする
                 { day: 1, weeks: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
                 { day: 1, weeks: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
                 { day: 1, weeks: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
@@ -89,12 +93,24 @@ export default {
                 { day: 1, weeks: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
                 { day: 1, weeks: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
             ]
-        }
+        };
+    },
+    mounted() {
+        this.fetchday
     },
     methods: {
-        ConfirmAlert() {
-            var result = confirm('本月の勤務時間を確定します\r確定後、編集することができなくなります。\r修正が必要になる場合、管理員までご連絡ください')
+        async fetchday() {
+            try {
+                const response = await axios.get('バックエンドのゲットリクエスト送信');
 
+                this.items.day = response.data.nitisuu;
+            } catch (error) {
+                console.error('Error fetching nitisuu value', error);
+            }
+
+        },
+        ConfirmAlert() {
+            var result = confirm('本月の勤務時間を確定します\r確定後、編集することができなくなります。\r修正が必要になる場合、管理員までご連絡ください');
             if (result) {
                 alert('提出完了');
                 this.isContentEditable = false;
@@ -105,7 +121,6 @@ export default {
         toggleContentEditable() {
             // contenteditableを切り替える
             this.isContentEditable = !this.isContentEditable;
-
             // 編集が有効になったら、セルにフォーカスを設定
             if (this.isContentEditable) {
                 this.$refs.editableCell.focus();
@@ -116,6 +131,7 @@ export default {
             this.item.note = event.target.textContent;
         }
     },
+    components: { HeaderMenu_screen }
 }
 </script>
 

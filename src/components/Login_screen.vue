@@ -1,6 +1,6 @@
 <template>
     <div class="frame">
-        <title></title>
+        <h1 style="text-align: center;">東進ソリューションズ株式会社 出勤登録システム</h1>
         <div class="login_id">
             <!-- ログインID入力 -->
             <label for="login" id="login_id">ログインID</label>
@@ -42,7 +42,7 @@ export default {
             else {
                 this.ErrorState = false;
                 this.ErrorMessage = "";
-                this.$router.push('/HeaderMenu_screen')
+                this.$router.push('Employee')
             }
         }
     }

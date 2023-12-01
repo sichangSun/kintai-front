@@ -43,12 +43,13 @@
             </tbody>
         </table>
         <div class="btns">
-            <button>本月の確定を戻す</button><button>管理者用メイン画面に戻る</button><button>メイン画面に戻る</button>
+            <button>本月の確定を戻す</button><button>管理者用メイン画面に戻る</button><button @click="Employee">メイン画面に戻る</button>
         </div>
     </div>
 </template>
 
 <script>
+import axios from 'axios';
 export default {
     name: 'Administrator_screen',
     data() {
@@ -56,10 +57,11 @@ export default {
             isContentEditable: false,
             Confirm: "本月勤怠未確定",
             items: [
-                { day: 1, weeks: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
-                { day: 1, weeks: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
-                { day: 1, weeks: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
-                { day: 1, weeks: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
+                { day: '', weeks: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },//この行をテストとする
+                { day: '', weeks: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
+                { day: '', weeks: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
+                { day: '', weeks: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
+                { day: '', weeks: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
                 { day: 1, weeks: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
                 { day: 1, weeks: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
                 { day: 1, weeks: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
@@ -89,7 +91,20 @@ export default {
             ]
         }
     },
+    mounted() {
+        this.fetchday
+    },
     methods: {
+        async fetchday() {
+            try {
+                const response = await axios.get('バックエンドのゲットリクエスト送信');
+
+                this.items.day = response.data.nitisuu;
+            } catch(error) {
+                console.error('Error fetching nitisuu value', error);
+            }
+
+        },
         ConfirmAlert() {
             var result = confirm('本月の勤務時間を確定します\r確定後、編集することができなくなります。\r修正が必要になる場合、管理員までご連絡ください')
 
@@ -111,7 +126,10 @@ export default {
         update(event) {
             // 編集中のテキストを更新
             this.item.note = event.target.textContent;
-        }
+        },
+        Employee() {
+            this.$router.push('Employee')
+        },
     },
 }
 </script>
@@ -138,8 +156,7 @@ button{
     margin: 20px;
 }
 
-.btns{
-    position: relative;
-    left: 60%;
-}
+/* .btns{
+    margin-left: 5%;
+} */
 </style>
