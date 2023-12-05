@@ -41,7 +41,7 @@ export default {
     height: 65px;
 }
 .in_Header{
-    float: left;
+    margin-left: 85%;
 }
 .el-header{
     line-height: 60px;

@@ -5,6 +5,7 @@
               名前  社員番号 {{ Confirm }}
         </div>
         <div class="Main">
+            <!-- 累計日数表示 -->
             <el-main>
                 <table>
                     <tr>
@@ -25,17 +26,25 @@
         <table>
             <thead>
                 <tr>
-                    <td colspan="6" >＜2023/11/01＞～＜2023/11/30＞<button class="btn" @click="toggleContentEditable" :disabled="unbutton">{{ isContentEditable ? "編集終了" : "編集開始" }}</button></td>
+                    <td colspan="6" >＜2023/11/01＞～＜2023/11/30＞
+                        <i class="el-icon-date" @click="changeDropdown"></i>
+                        <div v-if="isDropdownValue" class="dropdown">
+                            <ul>
+                                <li v-for="(month, index) in months" :key="index" @click="selectMonth(month)">{{ month }}</li>
+                            </ul>
+                        </div>
+                        {{ selectedMonth }}
+                        <button class="btn" v-if="showButton1" @click="toggleButtons('A')">{{ isContentEditable ? "編集" : "編集" }}</button></td>
                 </tr>
                 <tr>
                     <th>日付</th><th>曜日</th><th>勤休</th><th>出勤</th><th>退勤</th><th>仕事内容</th>
                 </tr>
-                
             </thead>
+            <!-- 勤怠入力 -->
             <tbody>
                 <tr v-for="item in items" :key="item">
                     <td>{{ item.day }}</td>
-                    <td>{{ item.weeks }}</td>
+                    <td>{{ item.youbi }}</td>
                     <td :contenteditable="isContentEditable.toString()" @input="update">{{ item.workrest }}</td>
                     <td :contenteditable="isContentEditable.toString()" @input="update">{{ item.adwork }}</td>
                     <td :contenteditable="isContentEditable.toString()" @input="update">{{ item.lvwork }}</td>
@@ -44,7 +53,7 @@
             </tbody>
         </table>
         <div class="btns">
-            <button @click="ConfirmAlert">本月勤怠確定</button>
+            <button v-if="showButton2" @click="toggleButtons('B')">保存</button><button v-if="confirmbutton" @click="ConfirmAlert">本月勤怠確定</button>
         </div>
     </div>
 </template>
@@ -57,77 +66,115 @@ export default {
     name: 'Employee_screen',
     data() {
         return {
-            isContentEditable: false,
-            Confirm: "本月勤怠未確定",
-            unbutton: false,
+            isContentEditable: false, //勤怠管理送信時確認
+            Confirm: "本月勤怠未確定", //確定後文字変更
+            showButton1: true, //編集ボタン表示
+            showButton2: false, //編集保存ボタン表示
+            confirmbutton: true, //本月勤怠管理ボタン表示
+            isDropdownValue: false, //
+            selectedMonth: "January", //何月か判断する
+            months: [
+                'January', 'February', 'March', 'April', 'May', 'June',
+                'July', 'August', 'September', 'October', 'November', 'December'
+            ],
             items: [
-                { day: '', weeks: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },//この行をテストとする
-                { day: '', weeks: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },//この行をテストとする
-                { day: '', weeks: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },//この行をテストとする
-                { day: '', weeks: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },//この行をテストとする
-                { day: '', weeks: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },//この行をテストとする
-                { day: 1, weeks: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
-                { day: 1, weeks: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
-                { day: 1, weeks: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
-                { day: 1, weeks: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
-                { day: 1, weeks: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
-                { day: 1, weeks: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
-                { day: 1, weeks: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
-                { day: 1, weeks: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
-                { day: 1, weeks: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
-                { day: 1, weeks: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
-                { day: 1, weeks: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
-                { day: 1, weeks: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
-                { day: 1, weeks: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
-                { day: 1, weeks: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
-                { day: 1, weeks: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
-                { day: 1, weeks: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
-                { day: 1, weeks: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
-                { day: 1, weeks: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
-                { day: 1, weeks: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
-                { day: 1, weeks: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
-                { day: 1, weeks: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
-                { day: 1, weeks: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
-                { day: 1, weeks: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
-                { day: 1, weeks: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
-                { day: 1, weeks: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
-                { day: 1, weeks: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
+                { day: '', youbi: '', workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },//この行をテストとする
+                { day: '', youbi: '', workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },//この行をテストとする
+                { day: '', youbi: '', workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },//この行をテストとする
+                { day: '', youbi: '', workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },//この行をテストとする
+                { day: '', youbi: '', workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },//この行をテストとする
+                { day: 1, youbi: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
+                { day: 1, youbi: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
+                { day: 1, youbi: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
+                { day: 1, youbi: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
+                { day: 1, youbi: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
+                { day: 1, youbi: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
+                { day: 1, youbi: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
+                { day: 1, youbi: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
+                { day: 1, youbi: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
+                { day: 1, youbi: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
+                { day: 1, youbi: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
+                { day: 1, youbi: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
+                { day: 1, youbi: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
+                { day: 1, youbi: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
+                { day: 1, youbi: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
+                { day: 1, youbi: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
+                { day: 1, youbi: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
+                { day: 1, youbi: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
+                { day: 1, youbi: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
+                { day: 1, youbi: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
+                { day: 1, youbi: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
+                { day: 1, youbi: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
+                { day: 1, youbi: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
+                { day: 1, youbi: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
+                { day: 1, youbi: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
+                { day: 1, youbi: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
             ]
         };
     },
     mounted() {
-        this.fetchday
+        this.fetchday();
+        this.fetchyoubi();
     },
     methods: {
+        //日付データをバックエンドから受け取る
         async fetchday() {
             try {
-                const response = await axios.get('バックエンドのゲットリクエスト送信');
+                const responseday = await axios.get('バックエンドのゲットリクエストURL貼る');
 
-                this.items.day = response.data.nitisuu;
+                this.items.day = responseday.data.nitisuu;
             } catch (error) {
                 console.error('Error fetching nitisuu value', error);
             }
-
         },
+        //曜日データをバックエンドから受け取る
+        async fetchyoubi() {
+            try {
+                const responseyoubi = await axios.get("バックエンドのゲットリクエストURL貼る");
+
+                this.items.youbi = responseyoubi.data.youbi;
+            } catch (error) {
+                console.error('Error fetching youbi value', error);
+            }
+        },
+        //勤務表送信時確認アラート機能
         ConfirmAlert() {
             var result = confirm('本月の勤務時間を確定します\r確定後、編集することができなくなります。\r修正が必要になる場合、管理員までご連絡ください');
             if (result) {
                 alert('提出完了');
                 this.isContentEditable = false;
-                this.unbutton = true;
+                this.showButton1 = false;
                 this.Confirm = "本月勤怠確定";
             }
         },
-        toggleContentEditable() {
-            // contenteditableを切り替える
+        changeDropdown() {
+            this.isDropdownValue = !this.isDropdownValue;
+        },
+        selectMonth(month) {
+            this.selectedMonth = month;
+            this.isDropdownValue = false;
+        },
+        //勤務表編集機能
+        toggleButtons(clickedButton) {
+            this.showButton1 = !this.showButton1;
+            this.showButton2 = !this.showButton2;
+            this.confirmbutton = !this.confirmbutton;
+            if (clickedButton == 'B') {
+                // alert('今月の勤務時間を保存しますか？');
+                var alarm = confirm('今月の勤務時間を保存しますか？');
+                if (!alarm){
+                    this.showButton1 = !this.showButton1;
+                    this.showButton2 = !this.showButton2;
+                    this.confirmbutton = !this.confirmbutton;
+                }
+            }
             this.isContentEditable = !this.isContentEditable;
-            // 編集が有効になったら、セルにフォーカスを設定
             if (this.isContentEditable) {
                 this.$refs.editableCell.focus();
             }
         },
+        // 編集中のテキストを更新
         update(event) {
-            // 編集中のテキストを更新
             this.item.note = event.target.textContent;
         }
     },
@@ -155,15 +202,27 @@ td {
     border: solid 1px #aaaaaa;
 }
 
-button {
-    margin: 20px;
-}
+
 .btn{
-    position: static;
-    /* left: 50%; */
+    margin: 10px;
+    padding: 3px;
+    height: auto;
+    margin-left: 60%; 
 }
 .btns {
-    position: relative;
-    left: 80%;
+    margin-left: 80%;
+}
+
+.dropdown {
+  position: absolute;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  padding: 5px;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
 }
 </style>

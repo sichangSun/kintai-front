@@ -97,7 +97,7 @@ export default {
     methods: {
         async fetchday() {
             try {
-                const response = await axios.get('バックエンドのゲットリクエスト送信');
+                const response = await axios.get('バックエンドのゲットリクエストURL貼る');
 
                 this.items.day = response.data.nitisuu;
             } catch(error) {
