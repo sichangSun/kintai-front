@@ -227,7 +227,7 @@
     <br/>
 <!--Button-->
     <el-row label-width="200px" class="right-aligned-button">
-      <el-button @click="getFormData"> 测试 </el-button>
+<!--      <el-button @click="getFormData"> 测试取得数据 </el-button>-->
       <el-button @click="cancelInfoUpdateForm" > キャンセル </el-button>
       <el-button> 管理画面に戻る </el-button>
       <el-button type="primary" @click="confirmBox"> 保存 </el-button>
@@ -273,9 +273,12 @@ export default {
     };
   },
   methods:{
-    getFormData(){
-      console.log('InfoUpdateForm',this.formInline)
-    },
+    // 取得数据（测试）
+    // getFormData(){
+    //   console.log('InfoUpdateForm',this.formInline)
+    // },
+
+    // 提示窗口＆保存
     confirmBox(){
       this.$confirm('是否确定保存信息？','提示',{
         confirmButtonText:'确定',
@@ -296,14 +299,15 @@ export default {
         })
       });
     },
+    // キャンセルボタン
     cancelInfoUpdateForm(){
       this.$router.push('/')
     },
-    // 添加关闭 Dialog 的方法
-    closeDialog() {
-      // 触发自定义事件，通知父组件关闭 Dialog
-      this.$emit('closeDialog');
-    },
+    // // 添加关闭 Dialog 的方法
+    // closeDialog() {
+    //   // 触发自定义事件，通知父组件关闭 Dialog
+    //   this.$emit('closeDialog');
+    // },
   }
 };
 </script>
@@ -321,6 +325,6 @@ export default {
 
 .right-aligned-button {
   float: right;
-  width: 56%;
+  width: 53%;
 }
 </style>
