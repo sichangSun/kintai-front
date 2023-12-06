@@ -123,7 +123,7 @@ export default {
         <el-form-item>
           <!-- <button type="primary" v-if="!isSubmitting" @click="keepPassword()">修正</button> -->
           <!-- <button :disabled="isSubmitting" type="primary" @click="keepPassword()">修正</button> -->
-          <el-button type="primary" @click="keepPassword()" >修正</el-button>
+          <el-button type="primary" :disabled="pwdForm.old_pwd == '' || pwdForm.new_pwd == ''|| pwdForm.re_pwd !==pwdForm.new_pwd" @click="keepPassword()" >修正</el-button>
           <el-button type="primary" @click="deleteAll()">リセット</el-button>
         </el-form-item>
       </el-form>
@@ -191,23 +191,34 @@ export default {
         keepPassword(){
           // this.isSubmitting = true
             // this.$refs.form.validate().then(valid=>{
-               console.log( 'PasswordChange_screen',this.pwdForm)
+              //  console.log( 'PasswordChange_screen',this.pwdForm)
             // },
-            this.$confirm('修改密码, 是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          this.$message({
-            type: 'success',
-            message: '修改成功!'
-          });
-        }).catch(() => {
-          this.$message({
-            type: 'info',
-            message: '已取消修改'
-          });          
-        });
+        //     this.$confirm('修改密码, 是否继续?', '提示', {
+        //   confirmButtonText: '确定',
+        //   cancelButtonText: '取消',
+        //   type: 'warning'
+        // }).then(() => {
+        //   this.$message({
+        //     type: 'success',
+        //     message: '修改成功!'
+        //   });
+        // }).catch(() => {
+        //   this.$message({
+        //     type: 'info',
+        //     message: '已取消修改'
+        //   });          
+        // });
+        var popups = confirm('修改密码, 是否继续?',)
+        if(popups){
+          if( /(?![A-Z]*$)(?![a-z]*$)(?![0-9]*$)/.test(this.pwdForm.new_pwd) && this.pwdForm.old_pwd =="12345678"){
+            alert('修改成功');
+          console.log( 'PasswordChange_screen',this.pwdForm)
+          }else{
+            alert('修改失败')
+          }
+        }else{
+          alert('取消')
+        }
       },
         //表单数据重置
         deleteAll(){
