@@ -23,6 +23,8 @@
                 </table>
             </el-main>
         </div>
+        <label for="filter">フィルタ:</label>
+        <input type="text" id="filter" v-model="filterText" placeholder="テキスト入力"/>
         <table>
             <thead>
                 <tr>
@@ -34,7 +36,8 @@
                             </ul>
                         </div>
                         {{ selectedMonth }}
-                        <button class="btn" v-if="showButton1" @click="toggleButtons('A')">{{ isContentEditable ? "編集" : "編集" }}</button></td>
+                        <button class="btn" v-if="showButton1" @click="toggleButtons('A')">{{ isContentEditable ? "編集" : "編集" }}</button>
+                    </td>
                 </tr>
                 <tr>
                     <th>日付</th><th>曜日</th><th>勤休</th><th>出勤</th><th>退勤</th><th>仕事内容</th>
@@ -42,7 +45,7 @@
             </thead>
             <!-- 勤怠入力 -->
             <tbody>
-                <tr v-for="item in items" :key="item">
+                <tr v-for="item in filteredItems" :key="item">
                     <td>{{ item.day }}</td>
                     <td>{{ item.youbi }}</td>
                     <td :contenteditable="isContentEditable.toString()" @input="update">{{ item.workrest }}</td>
@@ -53,7 +56,8 @@
             </tbody>
         </table>
         <div class="btns">
-            <button v-if="showButton2" @click="toggleButtons('B')">保存</button><button v-if="confirmbutton" @click="ConfirmAlert">本月勤怠確定</button>
+            <button v-if="showButton2" @click="toggleButtons('B')">保存</button>
+            <button v-if="confirmbutton" @click="ConfirmAlert">本月勤怠確定</button>
         </div>
     </div>
 </template>
@@ -71,19 +75,33 @@ export default {
             showButton1: true, //編集ボタン表示
             showButton2: false, //編集保存ボタン表示
             confirmbutton: true, //本月勤怠管理ボタン表示
-            isDropdownValue: false, //
+            isDropdownValue: false, 
             selectedMonth: "January", //何月か判断する
+            filterTableData: [],
+            filterText: '',
             months: [
                 'January', 'February', 'March', 'April', 'May', 'June',
                 'July', 'August', 'September', 'October', 'November', 'December'
             ],
-            items: [
+            headers: ['日付','曜日','勤休','出勤','退勤','仕事内容'],
+            items: [ //表の要素記入
                 { day: '', youbi: '', workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },//この行をテストとする
                 { day: '', youbi: '', workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },//この行をテストとする
                 { day: '', youbi: '', workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },//この行をテストとする
                 { day: '', youbi: '', workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },//この行をテストとする
                 { day: '', youbi: '', workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },//この行をテストとする
                 { day: 1, youbi: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
+                { day: 1, youbi: "木", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
+                { day: 1, youbi: "金", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
+                { day: 1, youbi: "土", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
+                { day: 1, youbi: "日", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
+                { day: 1, youbi: "月", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
+                { day: 1, youbi: "火", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
+                { day: 1, youbi: "水", workrest: "休", adwork: "9:00", lvwork: "18:00", note: "" },
+                { day: 1, youbi: "水", workrest: "休", adwork: "9:00", lvwork: "18:00", note: "" },
+                { day: 1, youbi: "水", workrest: "休", adwork: "9:00", lvwork: "18:00", note: "" },
+                { day: 1, youbi: "水", workrest: "休", adwork: "9:00", lvwork: "18:00", note: "" },
+                { day: 1, youbi: "水", workrest: "休", adwork: "9:00", lvwork: "18:00", note: "" },
                 { day: 1, youbi: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
                 { day: 1, youbi: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
                 { day: 1, youbi: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
@@ -97,24 +115,20 @@ export default {
                 { day: 1, youbi: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
                 { day: 1, youbi: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
                 { day: 1, youbi: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
-                { day: 1, youbi: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
-                { day: 1, youbi: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
-                { day: 1, youbi: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
-                { day: 1, youbi: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
-                { day: 1, youbi: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
-                { day: 1, youbi: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
-                { day: 1, youbi: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
-                { day: 1, youbi: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
-                { day: 1, youbi: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
-                { day: 1, youbi: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
-                { day: 1, youbi: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
-                { day: 1, youbi: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
+                { day: 1, youbi: "水", workrest: "勤    ", adwork: "9:00", lvwork: "18:00", note: "" },
             ]
         };
     },
     mounted() {
         this.fetchday();
         this.fetchyoubi();
+    },
+    computed: {
+        filteredItems() {
+            const filterText = this.filterText.toLowerCase();
+            return this.items.filter(item => item.workrest.toLowerCase().includes(filterText)
+            );
+        }
     },
     methods: {
         //日付データをバックエンドから受け取る
@@ -141,6 +155,7 @@ export default {
         ConfirmAlert() {
             var result = confirm('本月の勤務時間を確定します\r確定後、編集することができなくなります。\r修正が必要になる場合、管理員までご連絡ください');
             if (result) {
+                
                 alert('提出完了');
                 this.isContentEditable = false;
                 this.showButton1 = false;
@@ -160,9 +175,10 @@ export default {
             this.showButton2 = !this.showButton2;
             this.confirmbutton = !this.confirmbutton;
             if (clickedButton == 'B') {
+                console.log();
                 // alert('今月の勤務時間を保存しますか？');
                 var alarm = confirm('今月の勤務時間を保存しますか？');
-                if (!alarm){
+                if (!alarm) {
                     this.showButton1 = !this.showButton1;
                     this.showButton2 = !this.showButton2;
                     this.confirmbutton = !this.confirmbutton;
