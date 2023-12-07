@@ -23,8 +23,12 @@
                 </table>
             </el-main>
         </div>
-        <label for="filter">フィルタ:</label>
-        <input type="text" id="filter" v-model="filterText" placeholder="テキスト入力"/>
+        <div>
+            <!-- <label>
+                <input type="checkbox" v-model="filterOption.workrest"/>出勤
+            </label>
+             -->
+        </div>
         <table>
             <thead>
                 <tr>
