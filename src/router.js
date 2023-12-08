@@ -5,7 +5,7 @@ import HeaderMenu from './components/HeaderMenu_screen.vue'
 import Employee from './components/Employee_screen.vue';
 import Administrator from './components/Administrator_screen.vue';
 import PasswordChange from './components/PasswordChange_screen.vue'; 
-
+import MemberManage from './components/MemberManage_screen.vue'; 
 Vue.use(Router)
 
 export default new Router({
@@ -17,5 +17,6 @@ export default new Router({
         { path: '/Employee', name: 'Employee', component: Employee },
         { path: '/Administrator', name: 'Administrator', component: Administrator },
         { path: '/PasswordChange', name: 'PasswordChange', component: PasswordChange },
+        { path: '/MemberManage', name: 'MemberManage', component: MemberManage },
     ]
 })
