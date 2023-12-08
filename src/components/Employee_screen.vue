@@ -24,15 +24,32 @@
             </el-main>
         </div>
         <div>
-            <!-- <label>
+            <label>
                 <input type="checkbox" v-model="filterOption.workrest"/>出勤
             </label>
-             -->
+            <label>
+                <input type="checkbox" v-model="filterOption.workend" /> 休日
+            </label>
+            
         </div>
         <table>
             <thead>
                 <tr>
-                    <td colspan="6" >＜2023/11/01＞～＜2023/11/30＞
+                    <td colspan="6" >
+                    <div v-for="(value, key) in variables" :key="key">    
+                        <p v-if="months[0] == selectedMonth && key === 'A'">{{ value.start }} ～ {{ value.end }}</p>
+                        <p v-if="months[1] == selectedMonth && key === 'B'">{{ value.start }} ～ {{ value.end }}</p>
+                        <p v-if="months[2] == selectedMonth && key === 'C'">{{ value.start }} ～ {{ value.end }}</p>
+                        <p v-if="months[3] == selectedMonth && key === 'D'">{{ value.start }} ～ {{ value.end }}</p>
+                        <p v-if="months[4] == selectedMonth && key === 'E'">{{ value.start }} ～ {{ value.end }}</p>
+                        <p v-if="months[5] == selectedMonth && key === 'F'">{{ value.start }} ～ {{ value.end }}</p>
+                        <p v-if="months[6] == selectedMonth && key === 'G'">{{ value.start }} ～ {{ value.end }}</p>
+                        <p v-if="months[7] == selectedMonth && key === 'H'">{{ value.start }} ～ {{ value.end }}</p>
+                        <p v-if="months[8] == selectedMonth && key === 'I'">{{ value.start }} ～ {{ value.end }}</p>
+                        <p v-if="months[9] == selectedMonth && key === 'J'">{{ value.start }} ～ {{ value.end }}</p>
+                        <p v-if="months[10] == selectedMonth && key === 'K'">{{ value.start }} ～ {{ value.end }}</p>
+                        <p v-if="months[11] == selectedMonth && key === 'L'">{{ value.start }} ～ {{ value.end }}</p>
+                    </div>
                         <i class="el-icon-date" @click="changeDropdown"></i>
                         <div v-if="isDropdownValue" class="dropdown">
                             <ul>
@@ -44,12 +61,17 @@
                     </td>
                 </tr>
                 <tr>
-                    <th>日付</th><th>曜日</th><th>勤休</th><th>出勤</th><th>退勤</th><th>仕事内容</th>
+                    <th>日付</th>
+                    <th>曜日</th>
+                    <th>勤休</th>
+                    <th>出勤</th>
+                    <th>退勤</th>
+                    <th>仕事内容</th>
                 </tr>
             </thead>
             <!-- 勤怠入力 -->
             <tbody>
-                <tr v-for="item in filteredItems" :key="item">
+                <tr v-for="(item, index) in filteredItems" :key="index">
                     <td>{{ item.day }}</td>
                     <td>{{ item.youbi }}</td>
                     <td :contenteditable="isContentEditable.toString()" @input="update">{{ item.workrest }}</td>
@@ -79,47 +101,73 @@ export default {
             showButton1: true, //編集ボタン表示
             showButton2: false, //編集保存ボタン表示
             confirmbutton: true, //本月勤怠管理ボタン表示
-            isDropdownValue: false, 
+            isDropdownValue: false,
             selectedMonth: "January", //何月か判断する
-            filterTableData: [],
-            filterText: '',
+            Monthly: "<1/1>～<1/31>",
+            filterOption: {
+                weekday: false,
+                weekend: false,
+            },
+            weekdayMap: {
+                Monday: "Weekday",
+                Tuesday: "Weekday",
+                Wednesday: "Weekday",
+                Thursday: "Weekday",
+                Friday: "Weekday",
+                Saturday: "Weekend",
+                Sunday: "Weekend",
+            },
             months: [
                 'January', 'February', 'March', 'April', 'May', 'June',
                 'July', 'August', 'September', 'October', 'November', 'December'
             ],
+            variables: {
+                A: { start: '1/1', end: '1/31' },
+                B: { start: '2/1', end: '2/28' },
+                C: { start: '3/1', end: '3/31' },
+                D: { start: '4/1', end: '4/30' },
+                E: { start: '5/1', end: '5/31' },
+                F: { start: '6/1', end: '6/30' },
+                G: { start: '7/1', end: '7/31' },
+                H: { start: '8/1', end: '8/31' },
+                I: { start: '9/1', end: '9/30' },
+                J: { start: '10/1', end: '10/31' },
+                K: { start: '11/1', end: '11/30' },
+                L: { start: '12/1', end: '12/31' },
+                },
             headers: ['日付','曜日','勤休','出勤','退勤','仕事内容'],
             items: [ //表の要素記入
-                { day: '', youbi: '', workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },//この行をテストとする
-                { day: '', youbi: '', workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },//この行をテストとする
-                { day: '', youbi: '', workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },//この行をテストとする
-                { day: '', youbi: '', workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },//この行をテストとする
-                { day: '', youbi: '', workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },//この行をテストとする
-                { day: 1, youbi: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
-                { day: 1, youbi: "木", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
-                { day: 1, youbi: "金", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
-                { day: 1, youbi: "土", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
-                { day: 1, youbi: "日", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
-                { day: 1, youbi: "月", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
-                { day: 1, youbi: "火", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
-                { day: 1, youbi: "水", workrest: "休", adwork: "9:00", lvwork: "18:00", note: "" },
-                { day: 1, youbi: "水", workrest: "休", adwork: "9:00", lvwork: "18:00", note: "" },
-                { day: 1, youbi: "水", workrest: "休", adwork: "9:00", lvwork: "18:00", note: "" },
-                { day: 1, youbi: "水", workrest: "休", adwork: "9:00", lvwork: "18:00", note: "" },
-                { day: 1, youbi: "水", workrest: "休", adwork: "9:00", lvwork: "18:00", note: "" },
-                { day: 1, youbi: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
-                { day: 1, youbi: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
-                { day: 1, youbi: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
-                { day: 1, youbi: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
-                { day: 1, youbi: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
-                { day: 1, youbi: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
-                { day: 1, youbi: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
-                { day: 1, youbi: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
-                { day: 1, youbi: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
-                { day: 1, youbi: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
-                { day: 1, youbi: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
-                { day: 1, youbi: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
-                { day: 1, youbi: "水", workrest: "勤", adwork: "9:00", lvwork: "18:00", note: "" },
-                { day: 1, youbi: "水", workrest: "勤    ", adwork: "9:00", lvwork: "18:00", note: "" },
+                { day: '', youbi: '', workrest: "出勤", adwork: "9:00", lvwork: "18:00", note: "" },//この行をテストとする
+                { day: '', youbi: '', workrest: "出勤", adwork: "9:00", lvwork: "18:00", note: "" },//この行をテストとする
+                { day: '', youbi: '', workrest: "出勤", adwork: "9:00", lvwork: "18:00", note: "" },//この行をテストとする
+                { day: '', youbi: '', workrest: "出勤", adwork: "9:00", lvwork: "18:00", note: "" },//この行をテストとする
+                { day: '', youbi: '', workrest: "出勤", adwork: "9:00", lvwork: "18:00", note: "" },//この行をテストとする
+                { day: 1, youbi: "Wednesday", workrest: "出勤", adwork: "9:00", lvwork: "18:00", note: "" },
+                { day: 1, youbi: "Thursday", workrest: "出勤", adwork: "9:00", lvwork: "18:00", note: "" },
+                { day: 1, youbi: "Friday", workrest: "出勤", adwork: "9:00", lvwork: "18:00", note: "" },
+                { day: 1, youbi: "Saturday", workrest: "出勤", adwork: "9:00", lvwork: "18:00", note: "" },
+                { day: 1, youbi: "Sunday", workrest: "出勤", adwork: "9:00", lvwork: "18:00", note: "" },
+                { day: 1, youbi: "Monday", workrest: "出勤", adwork: "9:00", lvwork: "18:00", note: "" },
+                { day: 1, youbi: "Tuesday", workrest: "出勤", adwork: "9:00", lvwork: "18:00", note: "" },
+                { day: 1, youbi: "Wednesday", workrest: "休日", adwork: "9:00", lvwork: "18:00", note: "" },
+                { day: 1, youbi: "Wednesday", workrest: "休日", adwork: "9:00", lvwork: "18:00", note: "" },
+                { day: 1, youbi: "Wednesday", workrest: "休日", adwork: "9:00", lvwork: "18:00", note: "" },
+                { day: 1, youbi: "Wednesday", workrest: "休日", adwork: "9:00", lvwork: "18:00", note: "" },
+                { day: 1, youbi: "Wednesday", workrest: "休日", adwork: "9:00", lvwork: "18:00", note: "" },
+                { day: 1, youbi: "Wednesday", workrest: "出勤", adwork: "9:00", lvwork: "18:00", note: "" },
+                { day: 1, youbi: "Wednesday", workrest: "出勤", adwork: "9:00", lvwork: "18:00", note: "" },
+                { day: 1, youbi: "Wednesday", workrest: "出勤", adwork: "9:00", lvwork: "18:00", note: "" },
+                { day: 1, youbi: "Wednesday", workrest: "出勤", adwork: "9:00", lvwork: "18:00", note: "" },
+                { day: 1, youbi: "Wednesday", workrest: "出勤", adwork: "9:00", lvwork: "18:00", note: "" },
+                { day: 1, youbi: "Wednesday", workrest: "出勤", adwork: "9:00", lvwork: "18:00", note: "" },
+                { day: 1, youbi: "Wednesday", workrest: "出勤", adwork: "9:00", lvwork: "18:00", note: "" },
+                { day: 1, youbi: "Wednesday", workrest: "出勤", adwork: "9:00", lvwork: "18:00", note: "" },
+                { day: 1, youbi: "Wednesday", workrest: "出勤", adwork: "9:00", lvwork: "18:00", note: "" },
+                { day: 1, youbi: "Wednesday", workrest: "出勤", adwork: "9:00", lvwork: "18:00", note: "" },
+                { day: 1, youbi: "Wednesday", workrest: "出勤", adwork: "9:00", lvwork: "18:00", note: "" },
+                { day: 1, youbi: "Wednesday", workrest: "出勤", adwork: "9:00", lvwork: "18:00", note: "" },
+                { day: 1, youbi: "Wednesday", workrest: "出勤", adwork: "9:00", lvwork: "18:00", note: "" },
+                { day: 1, youbi: "Wednesday", workrest: "出勤", adwork: "9:00", lvwork: "18:00", note: "" },
             ]
         };
     },
@@ -129,9 +177,21 @@ export default {
     },
     computed: {
         filteredItems() {
-            const filterText = this.filterText.toLowerCase();
-            return this.items.filter(item => item.workrest.toLowerCase().includes(filterText)
-            );
+            return this.items.filter(item => {
+                const dayOfWeek = item.youbi;
+                const filterValue = this.$data.weekdayMap[dayOfWeek];
+
+                if (this.filterOption.weekday && filterValue === "Weekday") {
+                    return true;
+                }
+                if (this.filterOption.weekend && filterValue === "Weekend") {
+                    return true;
+                }
+                if (!this.filterOption.weekday && !this.filterOption.weekend) {
+                    return true;
+                }
+                return false;
+            });
         }
     },
     methods: {
