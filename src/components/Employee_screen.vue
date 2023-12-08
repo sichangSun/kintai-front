@@ -23,33 +23,24 @@
                 </table>
             </el-main>
         </div>
-        <div>
-            <label>
-                <input type="checkbox" v-model="filterOption.workrest"/>出勤
-            </label>
-            <label>
-                <input type="checkbox" v-model="filterOption.workend" /> 休日
-            </label>
-            
-        </div>
         <table>
             <thead>
                 <tr>
-                    <td colspan="6" >
-                    <div v-for="(value, key) in variables" :key="key">    
-                        <p v-if="months[0] == selectedMonth && key === 'A'">{{ value.start }} ～ {{ value.end }}</p>
-                        <p v-if="months[1] == selectedMonth && key === 'B'">{{ value.start }} ～ {{ value.end }}</p>
-                        <p v-if="months[2] == selectedMonth && key === 'C'">{{ value.start }} ～ {{ value.end }}</p>
-                        <p v-if="months[3] == selectedMonth && key === 'D'">{{ value.start }} ～ {{ value.end }}</p>
-                        <p v-if="months[4] == selectedMonth && key === 'E'">{{ value.start }} ～ {{ value.end }}</p>
-                        <p v-if="months[5] == selectedMonth && key === 'F'">{{ value.start }} ～ {{ value.end }}</p>
-                        <p v-if="months[6] == selectedMonth && key === 'G'">{{ value.start }} ～ {{ value.end }}</p>
-                        <p v-if="months[7] == selectedMonth && key === 'H'">{{ value.start }} ～ {{ value.end }}</p>
-                        <p v-if="months[8] == selectedMonth && key === 'I'">{{ value.start }} ～ {{ value.end }}</p>
-                        <p v-if="months[9] == selectedMonth && key === 'J'">{{ value.start }} ～ {{ value.end }}</p>
-                        <p v-if="months[10] == selectedMonth && key === 'K'">{{ value.start }} ～ {{ value.end }}</p>
-                        <p v-if="months[11] == selectedMonth && key === 'L'">{{ value.start }} ～ {{ value.end }}</p>
-                    </div>
+                    <td colspan="6" style="margin: 1px;">
+                        <div v-for="(value, key) in variables" :key="key"> 
+                            <p v-if="months[0] == selectedMonth && key === 'A'">{{ value.start }} ～ {{ value.end }}</p>
+                            <p v-if="months[1] == selectedMonth && key === 'B'">{{ value.start }} ～ {{ value.end }}</p>
+                            <p v-if="months[2] == selectedMonth && key === 'C'">{{ value.start }} ～ {{ value.end }}</p>
+                            <p v-if="months[3] == selectedMonth && key === 'D'">{{ value.start }} ～ {{ value.end }}</p>
+                            <p v-if="months[4] == selectedMonth && key === 'E'">{{ value.start }} ～ {{ value.end }}</p>
+                            <p v-if="months[5] == selectedMonth && key === 'F'">{{ value.start }} ～ {{ value.end }}</p>
+                            <p v-if="months[6] == selectedMonth && key === 'G'">{{ value.start }} ～ {{ value.end }}</p>
+                            <p v-if="months[7] == selectedMonth && key === 'H'">{{ value.start }} ～ {{ value.end }}</p>
+                            <p v-if="months[8] == selectedMonth && key === 'I'">{{ value.start }} ～ {{ value.end }}</p>
+                            <p v-if="months[9] == selectedMonth && key === 'J'">{{ value.start }} ～ {{ value.end }}</p>
+                            <p v-if="months[10] == selectedMonth && key === 'K'">{{ value.start }} ～ {{ value.end }}</p>
+                            <p v-if="months[11] == selectedMonth && key === 'L'">{{ value.start }} ～ {{ value.end }}</p>
+                        </div>
                         <i class="el-icon-date" @click="changeDropdown"></i>
                         <div v-if="isDropdownValue" class="dropdown">
                             <ul>
@@ -63,7 +54,13 @@
                 <tr>
                     <th>日付</th>
                     <th>曜日</th>
-                    <th>勤休</th>
+                    <th>勤休<i class="el-icon-arrow-down" @click="AttendanceDropdown"></i>
+                        <div v-if="isDropdownAttendance" class="dropdown">
+                            <ul>
+                                <li v-for="(Attendance, index) in Attendances" :key="index" @click="selectAttendance(Attendance)">{{ Attendance }}</li>
+                            </ul>
+                        </div>
+                    </th>
                     <th>出勤</th>
                     <th>退勤</th>
                     <th>仕事内容</th>
@@ -74,10 +71,10 @@
                 <tr v-for="(item, index) in filteredItems" :key="index">
                     <td>{{ item.day }}</td>
                     <td>{{ item.youbi }}</td>
-                    <td :contenteditable="isContentEditable.toString()" @input="update">{{ item.workrest }}</td>
-                    <td :contenteditable="isContentEditable.toString()" @input="update">{{ item.adwork }}</td>
-                    <td :contenteditable="isContentEditable.toString()" @input="update">{{ item.lvwork }}</td>
-                    <td :contenteditable="isContentEditable.toString()" @input="update">{{ item.note }}</td>
+                    <td :contenteditable="isContentEditable.toString()" @input="update(item, 'workrest')">{{ item.workrest }}</td>
+                    <td :contenteditable="isContentEditable.toString()" @input="update(item, 'adwork')">{{ item.adwork }}</td>
+                    <td :contenteditable="isContentEditable.toString()" @input="update(item, 'lvwork')">{{ item.lvwork }}</td>
+                    <td :contenteditable="isContentEditable.toString()" @input="update(item, 'note')">{{ item.note }}</td>
                 </tr>
             </tbody>
         </table>
@@ -104,6 +101,8 @@ export default {
             isDropdownValue: false,
             selectedMonth: "January", //何月か判断する
             Monthly: "<1/1>～<1/31>",
+            selectedAttendance: "全て", //勤怠フィルタリング判断
+            isDropdownAttendance: false,
             filterOption: {
                 weekday: false,
                 weekend: false,
@@ -120,6 +119,9 @@ export default {
             months: [
                 'January', 'February', 'March', 'April', 'May', 'June',
                 'July', 'August', 'September', 'October', 'November', 'December'
+            ],
+            Attendances: [
+                '全て','出勤','休暇'
             ],
             variables: {
                 A: { start: '1/1', end: '1/31' },
@@ -145,15 +147,15 @@ export default {
                 { day: 1, youbi: "Wednesday", workrest: "出勤", adwork: "9:00", lvwork: "18:00", note: "" },
                 { day: 1, youbi: "Thursday", workrest: "出勤", adwork: "9:00", lvwork: "18:00", note: "" },
                 { day: 1, youbi: "Friday", workrest: "出勤", adwork: "9:00", lvwork: "18:00", note: "" },
-                { day: 1, youbi: "Saturday", workrest: "出勤", adwork: "9:00", lvwork: "18:00", note: "" },
-                { day: 1, youbi: "Sunday", workrest: "出勤", adwork: "9:00", lvwork: "18:00", note: "" },
+                { day: 1, youbi: "Saturday", workrest: "休暇", adwork: "9:00", lvwork: "18:00", note: "" },
+                { day: 1, youbi: "Sunday", workrest: "休暇", adwork: "9:00", lvwork: "18:00", note: "" },
                 { day: 1, youbi: "Monday", workrest: "出勤", adwork: "9:00", lvwork: "18:00", note: "" },
                 { day: 1, youbi: "Tuesday", workrest: "出勤", adwork: "9:00", lvwork: "18:00", note: "" },
-                { day: 1, youbi: "Wednesday", workrest: "休日", adwork: "9:00", lvwork: "18:00", note: "" },
-                { day: 1, youbi: "Wednesday", workrest: "休日", adwork: "9:00", lvwork: "18:00", note: "" },
-                { day: 1, youbi: "Wednesday", workrest: "休日", adwork: "9:00", lvwork: "18:00", note: "" },
-                { day: 1, youbi: "Wednesday", workrest: "休日", adwork: "9:00", lvwork: "18:00", note: "" },
-                { day: 1, youbi: "Wednesday", workrest: "休日", adwork: "9:00", lvwork: "18:00", note: "" },
+                { day: 1, youbi: "Wednesday", workrest: "休暇", adwork: "9:00", lvwork: "18:00", note: "" },
+                { day: 1, youbi: "Wednesday", workrest: "休暇", adwork: "9:00", lvwork: "18:00", note: "" },
+                { day: 1, youbi: "Wednesday", workrest: "休暇", adwork: "9:00", lvwork: "18:00", note: "" },
+                { day: 1, youbi: "Wednesday", workrest: "休暇", adwork: "9:00", lvwork: "18:00", note: "" },
+                { day: 1, youbi: "Wednesday", workrest: "休暇", adwork: "9:00", lvwork: "18:00", note: "" },
                 { day: 1, youbi: "Wednesday", workrest: "出勤", adwork: "9:00", lvwork: "18:00", note: "" },
                 { day: 1, youbi: "Wednesday", workrest: "出勤", adwork: "9:00", lvwork: "18:00", note: "" },
                 { day: 1, youbi: "Wednesday", workrest: "出勤", adwork: "9:00", lvwork: "18:00", note: "" },
@@ -180,14 +182,15 @@ export default {
             return this.items.filter(item => {
                 const dayOfWeek = item.youbi;
                 const filterValue = this.$data.weekdayMap[dayOfWeek];
+                const attendanceFilter = this.selectedAttendance === '全て' || item.workrest === this.selectedAttendance;
 
-                if (this.filterOption.weekday && filterValue === "Weekday") {
+                if (this.filterOption.weekday && filterValue === "Weekday" && attendanceFilter) {
                     return true;
                 }
-                if (this.filterOption.weekend && filterValue === "Weekend") {
+                if (this.filterOption.weekend && filterValue === "Weekend" && attendanceFilter) {
                     return true;
                 }
-                if (!this.filterOption.weekday && !this.filterOption.weekend) {
+                if (!this.filterOption.weekday && !this.filterOption.weekend && attendanceFilter) {
                     return true;
                 }
                 return false;
@@ -229,9 +232,16 @@ export default {
         changeDropdown() {
             this.isDropdownValue = !this.isDropdownValue;
         },
+        AttendanceDropdown() {
+            this.isDropdownAttendance = !this.isDropdownAttendance;
+        },
         selectMonth(month) {
             this.selectedMonth = month;
             this.isDropdownValue = false;
+        },
+        selectAttendance(Attendance) {
+            this.selectedAttendance = Attendance;
+            this.isDropdownAttendance = false;
         },
         //勤務表編集機能
         toggleButtons(clickedButton) {
@@ -284,10 +294,7 @@ td {
 
 
 .btn{
-    margin: 10px;
-    padding: 3px;
-    height: auto;
-    margin-left: 60%; 
+    position: relative; left: 65%;
 }
 .btns {
     margin-left: 80%;
