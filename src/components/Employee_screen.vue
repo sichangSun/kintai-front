@@ -54,6 +54,7 @@
                 <tr>
                     <th>日付</th>
                     <th>曜日</th>
+                    <!-- 勤怠フィルタ -->
                     <th>勤休<i class="el-icon-arrow-down" @click="AttendanceDropdown"></i>
                         <div v-if="isDropdownAttendance" class="dropdown">
                             <ul>
@@ -72,8 +73,8 @@
                     <td>{{ item.day }}</td>
                     <td>{{ item.youbi }}</td>
                     <td :contenteditable="isContentEditable.toString()" @input="update(item, 'workrest')">{{ item.workrest }}</td>
-                    <td :contenteditable="isContentEditable.toString()" @input="update(item, 'adwork')">{{ item.adwork }}</td>
-                    <td :contenteditable="isContentEditable.toString()" @input="update(item, 'lvwork')">{{ item.lvwork }}</td>
+                    <td :contenteditable="isContentEditable.toString()" @input="update(item, 'startwork')">{{ item.startwork }}</td>
+                    <td :contenteditable="isContentEditable.toString()" @input="update(item, 'endwork')">{{ item.endwork }}</td>
                     <td :contenteditable="isContentEditable.toString()" @input="update(item, 'note')">{{ item.note }}</td>
                 </tr>
             </tbody>
@@ -93,21 +94,21 @@ export default {
     name: 'Employee_screen',
     data() {
         return {
-            isContentEditable: false, //勤怠管理送信時確認
+            isContentEditable: false, //勤怠編集権限
             Confirm: "本月勤怠未確定", //確定後文字変更
             showButton1: true, //編集ボタン表示
             showButton2: false, //編集保存ボタン表示
             confirmbutton: true, //本月勤怠管理ボタン表示
-            isDropdownValue: false,
+            isDropdownValue: false, //月の選択を行うボタン
             selectedMonth: "January", //何月か判断する
-            Monthly: "<1/1>～<1/31>",
+            Monthly: "<1/1>～<1/31>", //表示用
             selectedAttendance: "全て", //勤怠フィルタリング判断
-            isDropdownAttendance: false,
-            filterOption: {
+            isDropdownAttendance: false, //勤怠ドロップダウンリスト
+            filterOption: { //平日休日判定
                 weekday: false,
                 weekend: false,
             },
-            weekdayMap: {
+            weekdayMap: { //平日休日判定
                 Monday: "Weekday",
                 Tuesday: "Weekday",
                 Wednesday: "Weekday",
@@ -116,11 +117,11 @@ export default {
                 Saturday: "Weekend",
                 Sunday: "Weekend",
             },
-            months: [
+            months: [ //何月判定
                 'January', 'February', 'March', 'April', 'May', 'June',
                 'July', 'August', 'September', 'October', 'November', 'December'
             ],
-            Attendances: [
+            Attendances: [//出勤判定
                 '全て','出勤','休暇'
             ],
             variables: {
@@ -139,37 +140,37 @@ export default {
                 },
             headers: ['日付','曜日','勤休','出勤','退勤','仕事内容'],
             items: [ //表の要素記入
-                { day: '', youbi: '', workrest: "出勤", adwork: "9:00", lvwork: "18:00", note: "" },//この行をテストとする
-                { day: '', youbi: '', workrest: "出勤", adwork: "9:00", lvwork: "18:00", note: "" },//この行をテストとする
-                { day: '', youbi: '', workrest: "出勤", adwork: "9:00", lvwork: "18:00", note: "" },//この行をテストとする
-                { day: '', youbi: '', workrest: "出勤", adwork: "9:00", lvwork: "18:00", note: "" },//この行をテストとする
-                { day: '', youbi: '', workrest: "出勤", adwork: "9:00", lvwork: "18:00", note: "" },//この行をテストとする
-                { day: 1, youbi: "Wednesday", workrest: "出勤", adwork: "9:00", lvwork: "18:00", note: "" },
-                { day: 1, youbi: "Thursday", workrest: "出勤", adwork: "9:00", lvwork: "18:00", note: "" },
-                { day: 1, youbi: "Friday", workrest: "出勤", adwork: "9:00", lvwork: "18:00", note: "" },
-                { day: 1, youbi: "Saturday", workrest: "休暇", adwork: "9:00", lvwork: "18:00", note: "" },
-                { day: 1, youbi: "Sunday", workrest: "休暇", adwork: "9:00", lvwork: "18:00", note: "" },
-                { day: 1, youbi: "Monday", workrest: "出勤", adwork: "9:00", lvwork: "18:00", note: "" },
-                { day: 1, youbi: "Tuesday", workrest: "出勤", adwork: "9:00", lvwork: "18:00", note: "" },
-                { day: 1, youbi: "Wednesday", workrest: "休暇", adwork: "9:00", lvwork: "18:00", note: "" },
-                { day: 1, youbi: "Wednesday", workrest: "休暇", adwork: "9:00", lvwork: "18:00", note: "" },
-                { day: 1, youbi: "Wednesday", workrest: "休暇", adwork: "9:00", lvwork: "18:00", note: "" },
-                { day: 1, youbi: "Wednesday", workrest: "休暇", adwork: "9:00", lvwork: "18:00", note: "" },
-                { day: 1, youbi: "Wednesday", workrest: "休暇", adwork: "9:00", lvwork: "18:00", note: "" },
-                { day: 1, youbi: "Wednesday", workrest: "出勤", adwork: "9:00", lvwork: "18:00", note: "" },
-                { day: 1, youbi: "Wednesday", workrest: "出勤", adwork: "9:00", lvwork: "18:00", note: "" },
-                { day: 1, youbi: "Wednesday", workrest: "出勤", adwork: "9:00", lvwork: "18:00", note: "" },
-                { day: 1, youbi: "Wednesday", workrest: "出勤", adwork: "9:00", lvwork: "18:00", note: "" },
-                { day: 1, youbi: "Wednesday", workrest: "出勤", adwork: "9:00", lvwork: "18:00", note: "" },
-                { day: 1, youbi: "Wednesday", workrest: "出勤", adwork: "9:00", lvwork: "18:00", note: "" },
-                { day: 1, youbi: "Wednesday", workrest: "出勤", adwork: "9:00", lvwork: "18:00", note: "" },
-                { day: 1, youbi: "Wednesday", workrest: "出勤", adwork: "9:00", lvwork: "18:00", note: "" },
-                { day: 1, youbi: "Wednesday", workrest: "出勤", adwork: "9:00", lvwork: "18:00", note: "" },
-                { day: 1, youbi: "Wednesday", workrest: "出勤", adwork: "9:00", lvwork: "18:00", note: "" },
-                { day: 1, youbi: "Wednesday", workrest: "出勤", adwork: "9:00", lvwork: "18:00", note: "" },
-                { day: 1, youbi: "Wednesday", workrest: "出勤", adwork: "9:00", lvwork: "18:00", note: "" },
-                { day: 1, youbi: "Wednesday", workrest: "出勤", adwork: "9:00", lvwork: "18:00", note: "" },
-                { day: 1, youbi: "Wednesday", workrest: "出勤", adwork: "9:00", lvwork: "18:00", note: "" },
+                { day: '', youbi: '', workrest: "出勤", startwork: "9:00", endwork: "18:00", note: "" },//この行をテストとする
+                { day: '', youbi: '', workrest: "出勤", startwork: "9:00", endwork: "18:00", note: "" },//この行をテストとする
+                { day: '', youbi: '', workrest: "出勤", startwork: "9:00", endwork: "18:00", note: "" },//この行をテストとする
+                { day: '', youbi: '', workrest: "出勤", startwork: "9:00", endwork: "18:00", note: "" },//この行をテストとする
+                { day: '', youbi: '', workrest: "出勤", startwork: "9:00", endwork: "18:00", note: "" },//この行をテストとする
+                { day: 1, youbi: "Wednesday", workrest: "出勤", startwork: "9:00", endwork: "18:00", note: "" },
+                { day: 1, youbi: "Thursday", workrest: "出勤", startwork: "9:00", endwork: "18:00", note: "" },
+                { day: 1, youbi: "Friday", workrest: "出勤", startwork: "9:00", endwork: "18:00", note: "" },
+                { day: 1, youbi: "Saturday", workrest: "休暇", startwork: "9:00", endwork: "18:00", note: "" },
+                { day: 1, youbi: "Sunday", workrest: "休暇", startwork: "9:00", endwork: "18:00", note: "" },
+                { day: 1, youbi: "Monday", workrest: "出勤", startwork: "9:00", endwork: "18:00", note: "" },
+                { day: 1, youbi: "Tuesday", workrest: "出勤", startwork: "9:00", endwork: "18:00", note: "" },
+                { day: 1, youbi: "Wednesday", workrest: "休暇", startwork: "9:00", endwork: "18:00", note: "" },
+                { day: 1, youbi: "Wednesday", workrest: "休暇", startwork: "9:00", endwork: "18:00", note: "" },
+                { day: 1, youbi: "Wednesday", workrest: "休暇", startwork: "9:00", endwork: "18:00", note: "" },
+                { day: 1, youbi: "Wednesday", workrest: "休暇", startwork: "9:00", endwork: "18:00", note: "" },
+                { day: 1, youbi: "Wednesday", workrest: "休暇", startwork: "9:00", endwork: "18:00", note: "" },
+                { day: 1, youbi: "Wednesday", workrest: "出勤", startwork: "9:00", endwork: "18:00", note: "" },
+                { day: 1, youbi: "Wednesday", workrest: "出勤", startwork: "9:00", endwork: "18:00", note: "" },
+                { day: 1, youbi: "Wednesday", workrest: "出勤", startwork: "9:00", endwork: "18:00", note: "" },
+                { day: 1, youbi: "Wednesday", workrest: "出勤", startwork: "9:00", endwork: "18:00", note: "" },
+                { day: 1, youbi: "Wednesday", workrest: "出勤", startwork: "9:00", endwork: "18:00", note: "" },
+                { day: 1, youbi: "Wednesday", workrest: "出勤", startwork: "9:00", endwork: "18:00", note: "" },
+                { day: 1, youbi: "Wednesday", workrest: "出勤", startwork: "9:00", endwork: "18:00", note: "" },
+                { day: 1, youbi: "Wednesday", workrest: "出勤", startwork: "9:00", endwork: "18:00", note: "" },
+                { day: 1, youbi: "Wednesday", workrest: "出勤", startwork: "9:00", endwork: "18:00", note: "" },
+                { day: 1, youbi: "Wednesday", workrest: "出勤", startwork: "9:00", endwork: "18:00", note: "" },
+                { day: 1, youbi: "Wednesday", workrest: "出勤", startwork: "9:00", endwork: "18:00", note: "" },
+                { day: 1, youbi: "Wednesday", workrest: "出勤", startwork: "9:00", endwork: "18:00", note: "" },
+                { day: 1, youbi: "Wednesday", workrest: "出勤", startwork: "9:00", endwork: "18:00", note: "" },
+                { day: 1, youbi: "Wednesday", workrest: "出勤", startwork: "9:00", endwork: "18:00", note: "" },
             ]
         };
     },
