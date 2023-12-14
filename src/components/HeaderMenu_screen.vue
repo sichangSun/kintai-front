@@ -1,7 +1,9 @@
 <template>
     <div id="HeaderMenu" class="Header">
         <el-header>
+            {{ time }}
             <el-select class="in_Header" v-model="value" clearable placeholder="メニュー">
+                
                 <el-option 
                     v-for="item in options"
                     :key="item.value"
@@ -28,7 +30,21 @@ export default {
                 { value: 'Option5', label: 'ログアウト' },
             ],
             value: '',
+            time: '',
         };
+    },
+    mounted() {
+        setInterval(this.updateTime, 100);
+    },
+    methods:{
+        updateTime() {
+            var nowTime = new Date(); //  現在日時を得る
+            var nowHour = ('0' + nowTime.getHours()).slice(-2); // 時を抜き出す
+            var nowMin = ('0' + nowTime.getMinutes()).slice(-2); // 分を抜き出す
+            var nowSec = ('0' + nowTime.getSeconds()).slice(-2); // 秒を抜き出す
+
+            this.time = nowHour + ':' + nowMin + ':' + nowSec;
+        },
     },
 }
 </script>
@@ -40,10 +56,8 @@ export default {
     width: 100%;
     height: 65px;
 }
-.in_Header{
-    margin-left: 85%;
-}
 .el-header{
+    margin-left: 75%;
     line-height: 60px;
 }
 </style>
