@@ -4,9 +4,11 @@
         <div style="margin-top: 10px;">
               名前  社員番号 {{ Confirm }}
         </div>
-        <div class="Main">
+        
+        <div>
             <!-- 累計日数表示 -->
             <el-main>
+                <div class="caution">注：毎月月末確定ボタンを押してください、確定した後編集する場合、管理員までご連絡ください。</div>
                 <table>
                     <tr>
                         <th colspan="4">11月累計</th>
@@ -223,10 +225,10 @@ export default {
         ConfirmAlert() {
             var result = confirm('本月の勤務時間を確定します\r確定後、編集することができなくなります。\r修正が必要になる場合、管理員までご連絡ください');
             if (result) {
-                
                 alert('提出完了');
                 this.isContentEditable = false;
                 this.showButton1 = false;
+                this.confirmbutton = false;
                 this.Confirm = "本月勤怠確定";
             }
         },
@@ -308,6 +310,12 @@ td {
   padding: 5px;
 }
 
+.caution{
+    width: 80%;
+    margin: 0 auto;
+    border-collapse: collapse;
+    border-spacing: 0;
+}
 ul {
   list-style-type: none;
   padding: 0;
