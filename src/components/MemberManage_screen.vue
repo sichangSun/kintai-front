@@ -1,5 +1,6 @@
 <template>
   <div>
+    <HeaderMenu_screen/>
     <div>
     <h1>社員管理画面</h1>
       検索：
@@ -108,6 +109,7 @@
 </template>
 
 <script>
+import HeaderMenu_screen from './HeaderMenu_screen.vue';
 
 const mockData = [
   {
@@ -156,7 +158,8 @@ export default {
     clearQuery(){
       this.tableData = mockData
     }
-  }
+  },
+  components: { HeaderMenu_screen }
 };
 
 </script>
