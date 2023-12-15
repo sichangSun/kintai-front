@@ -58,6 +58,48 @@
     </template>
     </el-table-column>
   </el-table>
+  <!-- <EditTable class="edit-table" :data-source="tableData" >
+    <EditTableColumn prop="number" label="社員番号" sortable>
+      <template #edit="{ row }">
+        <input v-model="row.number" />
+      </template>
+
+    <EditTableColumn prop="kubun" label="区分">
+    </EditTableColumn>
+      <template #edit="{ row }">
+        <input v-model="row.kubun" />
+      </template>
+    </EditTableColumn>
+
+    <EditTableColumn prop="name" label="姓名" sortable>
+      <template #edit="{ row }">
+        <input v-model="row.name" />
+      </template>
+    </EditTableColumn>
+
+    <EditTableColumn prop="sex" label="性別">
+      <template #edit="{ row }">
+        <input v-model="row.sex" />
+      </template>
+    </EditTableColumn>
+
+    <EditTableColumn prop="note" label="備考">
+      <template #edit="{ row }">
+        <input v-model="row.address" />
+      </template>
+    </EditTableColumn>
+
+    <EditTableColumn label="操作">
+      <template #default="{ actions, $index }">
+        <button @click="actions.startEditable($index)">操作</button>
+      </template>
+      <template #edit="{ actions, $index }">
+        <button @click="actions.saveEditable($index)">保存</button>
+        <button @click="actions.cancelEditable($index)">取消</button>
+      </template>
+    </EditTableColumn>
+  </EditTable> -->
+
       <div>
         <button class="btn2" @click="Employee" >メイン画面に戻る</button>
       </div>
@@ -66,8 +108,7 @@
 </template>
 
 <script>
-// import axios from 'axios';
-// import { CheckboxButton } from 'element-ui';
+
 const mockData = [
   {
     number:123,
@@ -103,7 +144,9 @@ export default {
     this.tableData = mockData
   }, 
   methods:{
-    Employee(){
+    Employee({ name, y }){
+      name
+      y
       this.$router.push('Employee')
     },
 
