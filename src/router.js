@@ -1,12 +1,13 @@
 import Vue from 'vue';
-import Router from 'vue-router'
-import Login from './components/Login_screen.vue'
+import Router from 'vue-router';
+import Login from './components/Login_screen.vue';
 import Registration from "./components/Registration_screen.vue";
-import HeaderMenu from './components/HeaderMenu_screen.vue'
+import HeaderMenu from './components/HeaderMenu_screen.vue';
 import Employee from './components/Employee_screen.vue';
 import Administrator from './components/Administrator_screen.vue';
 import PasswordChange from './components/PasswordChange_screen.vue'; 
-import MemberManage from './components/MemberManage_screen.vue'; 
+import MemberManage from './components/MemberManage_screen.vue';
+import InfoUpdateForm from "./components/InfoUpdateForm.vue";
 Vue.use(Router)
 
 export default new Router({
@@ -20,5 +21,6 @@ export default new Router({
         { path: '/Administrator', name: 'Administrator', component: Administrator },
         { path: '/PasswordChange', name: 'PasswordChange', component: PasswordChange },
         { path: '/MemberManage', name: 'MemberManage', component: MemberManage },
+        { path: '/InfoUpdateForm', name: 'InfoUpdateForm',component: InfoUpdateForm }
     ]
 })

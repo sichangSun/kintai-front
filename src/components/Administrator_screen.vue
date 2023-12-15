@@ -2,7 +2,7 @@
     <div>
         <HeaderMenu_screen/>
         <div>
-            名前  社員番号<button @click="basic_info()" id="change_btn">基本情報編集</button>
+            名前  社員番号<button @click="basic_info" id="change_btn">基本情報編集</button>
         </div>
         <div class="Main">
             <el-main>
@@ -219,6 +219,9 @@ export default {
                 console.error('Error fetching youbi value', error);
             }
         },
+        basic_info() {
+            this.$router.push('InfoUpdateForm')
+        },
         changeDropdown() {
             this.isDropdownValue = !this.isDropdownValue;
         },
@@ -234,7 +237,7 @@ export default {
             this.isDropdownAttendance = false;
         },
         confirmback() {
-
+            
         },
         MemberManage() {
             this.$router.push('MemberManage')
