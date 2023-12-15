@@ -80,7 +80,7 @@
         <div class="btn3">
             <button v-if="showButton2" @click="toggleButtons('B')">保存</button>
             <button v-if="confirmbackbutton" @click="confirmback">本月の確定を戻す</button>
-            <button v-if="Administbackbutton" @click="Administrator">管理者用メイン画面に戻る</button>
+            <button v-if="MemberManagebackbutton" @click="MemberManage">管理者用メイン画面に戻る</button>
             <button v-if="Employeebackbutton" @click="Employee">メイン画面に戻る</button>
         </div>
     </div>
@@ -97,7 +97,7 @@ export default {
             showButton1: true, //編集ボタン表示
             showButton2: false, //編集保存ボタン表示
             confirmbackbutton: true,
-            Administbackbutton: true,
+            MemberManagebackbutton: true,
             Employeebackbutton: true,
             isDropdownValue: false, //月の選択を行うボタン
             selectedMonth: "January", //何月か判断する
@@ -236,8 +236,8 @@ export default {
         confirmback() {
 
         },
-        Administrator() {
-            this.$router.push('Administrator')
+        MemberManage() {
+            this.$router.push('MemberManage')
         },
         Employee() {
             this.$router.push('Employee')
@@ -246,7 +246,7 @@ export default {
             this.showButton1 = !this.showButton1;
             this.showButton2 = !this.showButton2;
             this.confirmbackbutton = !this.confirmbackbutton;
-            this.Administbackbutton = !this.Administbackbutton;
+            this.MemberManagebackbutton = !this.MemberManagebackbutton;
             this.Employeebackbutton = !this.Employeebackbutton;
             if (clickedButton == 'B') {
                 console.log();
@@ -256,7 +256,7 @@ export default {
                     this.showButton1 = !this.showButton1;
                     this.showButton2 = !this.showButton2;
                     this.confirmbackbutton = !this.confirmbackbutton;
-                    this.Administbackbutton = !this.Administbackbutton;
+                    this.MemberManagebackbutton = !this.MemberManagebackbutton;
                     this.Employeebackbutton = !this.Employeebackbutton;
                 }
             }

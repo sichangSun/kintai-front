@@ -2,7 +2,7 @@
     <div id="HeaderMenu" class="Header">
         <el-header>
             {{ time }}
-            <el-select class="in_Header" v-model="value" clearable placeholder="メニュー">
+            <el-select class="in_Header" v-model="value" clearable placeholder="メニュー" @change="Headermenuchenge">
                 
                 <el-option 
                     v-for="item in options"
@@ -45,6 +45,14 @@ export default {
 
             this.time = nowHour + ':' + nowMin + ':' + nowSec;
         },
+        Headermenuchenge() {
+            if (this.value == 'Option1') {
+                this.$router.push('PasswordChange')
+            }
+            if (this.value == 'Option2') {
+                this.$router.push('MemberManage')
+            }
+        }
     },
 }
 </script>
