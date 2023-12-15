@@ -24,10 +24,9 @@ export default {
         return {
             options: [
                 { value: 'Option1', label: 'パスワード修正' },
-                { value: 'Option2', label: '社員管理', disabled: true },
-                { value: 'Option3', label: '新規社員追加', disabled: true },
-                { value: 'Option4', label: '管理者メイン画面', },
-                { value: 'Option5', label: 'ログアウト' },
+                { value: 'Option2', label: '社員管理', disabled: false },
+                { value: 'Option3', label: '新規社員追加', disabled: false },
+                { value: 'Option4', label: 'ログアウト' },
             ],
             value: '',
             time: '',
@@ -51,6 +50,9 @@ export default {
             }
             if (this.value == 'Option2') {
                 this.$router.push('MemberManage')
+            }
+            if (this.value == 'Option4') {
+                return
             }
         }
     },
