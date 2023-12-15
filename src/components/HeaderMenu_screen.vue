@@ -23,10 +23,11 @@ export default {
     data() {
         return {
             options: [
-                { value: 'Option1', label: 'パスワード修正' },
-                { value: 'Option2', label: '社員管理', disabled: false },
-                { value: 'Option3', label: '新規社員追加', disabled: false },
-                { value: 'Option4', label: 'ログアウト' },
+                { value: 'Option1', label: 'メイン画面' },
+                { value: 'Option2', label: 'パスワード修正' },
+                { value: 'Option3', label: '社員管理', disabled: false },
+                { value: 'Option4', label: '新規社員追加', disabled: false },
+                { value: 'Option5', label: 'ログアウト' },
             ],
             value: '',
             time: '',
@@ -46,13 +47,16 @@ export default {
         },
         Headermenuchenge() {
             if (this.value == 'Option1') {
-                this.$router.push('PasswordChange')
+                this.$router.push('Employee')
             }
             if (this.value == 'Option2') {
+                this.$router.push('PasswordChange')
+            }
+            if (this.value == 'Option3') {
                 this.$router.push('MemberManage')
             }
-            if (this.value == 'Option4') {
-                return
+            if (this.value == 'Option5') {
+                this.$router.push('Registration')
             }
         }
     },
