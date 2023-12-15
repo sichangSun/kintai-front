@@ -77,7 +77,7 @@
                 </tr>
             </tbody>
         </table>
-        <div class="btns">
+        <div class="btn3">
             <button v-if="showButton2" @click="toggleButtons('B')">保存</button>
             <button v-if="confirmbackbutton" @click="confirmback">本月の確定を戻す</button>
             <button v-if="Administbackbutton" @click="Administrator">管理者用メイン画面に戻る</button>
@@ -297,7 +297,7 @@ button{
     margin: 20px;
 }
 
-/* .btns{
-    margin-left: 5%;
-} */
+.btn3{
+    margin-left: 60%;
+}
 </style>
