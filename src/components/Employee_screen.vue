@@ -11,16 +11,16 @@
                 <div class="caution">注：毎月月末確定ボタンを押してください、確定した後編集する場合、管理員までご連絡ください。</div>
                 <table>
                     <tr>
-                        <th colspan="4">11月累計</th>
+                        <th colspan="4">{{ countmonth }}月累計</th>
                     </tr>
                     <tr>
-                        <th>本月総日数</th> <td>30日</td> <th>稼働時間</th> <td>160</td>
+                        <th>本月総日数</th> <td>{{ countday }}日</td> <th>稼働時間</th> <td>{{ weekdayCount * 8 }}</td>
                     </tr>
                     <tr>
-                        <th>平日日数</th> <td>20日</td> <th>xxxx</th> <td>xx</td>
+                        <th>平日日数</th> <td>{{ weekdayCount }}日</td> <th>xxxx</th> <td>xx</td>
                     </tr>
                     <tr>
-                        <th>休日日数</th> <td>10日</td> <th>xxxx</th> <td>xx</td>
+                        <th>休日日数</th> <td>{{ countday - weekdayCount }}日</td> <th>xxxx</th> <td>xx</td>
                     </tr>
                 </table>
             </el-main>
@@ -106,6 +106,9 @@ export default {
             Monthly: "<1/1>～<1/31>", //表示用
             selectedAttendance: "全て", //勤怠フィルタリング判断
             isDropdownAttendance: false, //勤怠ドロップダウンリスト
+            countmonth: '', //何月表示
+            countday: '', // 今月の日数表示
+            weekdayCount: 0, //平日日数表示
             filterOption: { //平日休日判定
                 weekday: false,
                 weekend: false,
@@ -179,6 +182,10 @@ export default {
     mounted() {
         this.fetchday();
         this.fetchyoubi();
+        this.updateMonth();
+        this.updateDay();
+        this.updateWeekdayCount();
+        this.updateWeekendCount();
     },
     computed: {
         filteredItems() {
@@ -220,6 +227,35 @@ export default {
             } catch (error) {
                 console.error('Error fetching youbi value', error);
             }
+        },
+        //今月が何月かを判断する
+        updateMonth() {
+            var monthval = new Date();
+            var monthlog = monthval.getMonth() + 1;
+            this.countmonth = monthlog;
+        },
+        //今月は何日あるかを判断する
+        updateDay() {
+            let dayval = new Date();
+            dayval.setMonth(dayval.getMonth() + 1, 0);
+            this.countday = dayval.getDate();
+        },
+        //今月の出勤日が何日かを判断する
+        updateWeekdayCount() {
+            const currentDate = new Date();
+            const year = currentDate.getFullYear();
+            const month = currentDate.getMonth();
+            const lastDayOfMonth = new Date(year, month + 1, 0).getDate();
+
+            let weekdayCount = 0;
+            for (let day = 1; day <= lastDayOfMonth; day++) {
+                const currentDay = new Date(year, month, day).getDay();
+                // 0は日曜日、6は土曜日なので、平日の場合は0～5の範囲になります
+                if (currentDay >= 1 && currentDay <= 5) {
+                    weekdayCount++;
+                }
+            }
+            this.weekdayCount = weekdayCount;
         },
         //勤務表送信時確認アラート機能
         ConfirmAlert() {

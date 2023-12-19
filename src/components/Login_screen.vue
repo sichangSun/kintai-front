@@ -56,7 +56,7 @@ export default {
                 this.ErrorMessage_pass = "";
             }
             if (this.login_id !== "" && this.password !== "") {
-                this.$router.push('Employee');
+                this.$router.push('Administrator');
             }
         }
     }

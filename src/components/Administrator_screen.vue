@@ -8,16 +8,16 @@
             <el-main>
                 <table>
                     <tr>
-                        <th colspan="4">11月累計</th>
+                        <th colspan="4">{{ countmonth }}月累計</th>
                     </tr>
                     <tr>
-                        <th>本月総日数</th> <td>30日</td> <th>稼働時間</th> <td>160</td>
+                        <th>本月総日数</th> <td>{{ countday }}日</td> <th>稼働時間</th> <td>{{ weekdayCount * 8 }}</td>
                     </tr>
                     <tr>
-                        <th>平日日数</th> <td>20日</td> <th>xxxx</th> <td>xx</td>
+                        <th>平日日数</th> <td>{{ weekdayCount }}日</td> <th>xxxx</th> <td>xx</td>
                     </tr>
                     <tr>
-                        <th>休日日数</th> <td>10日</td> <th>xxxx</th> <td>xx</td>
+                        <th>休日日数</th> <td>{{ countday - weekdayCount }}日</td> <th>xxxx</th> <td>xx</td>
                     </tr>
                 </table>
             </el-main>
@@ -27,18 +27,18 @@
                 <tr>
                     <td colspan="6" style="margin: 1px;">
                         <div v-for="(value, key) in variables" :key="key"> 
-                            <p v-if="months[0] == selectedMonth && key === 'A'">{{ value.start }} ～ {{ value.end }}</p>
-                            <p v-if="months[1] == selectedMonth && key === 'B'">{{ value.start }} ～ {{ value.end }}</p>
-                            <p v-if="months[2] == selectedMonth && key === 'C'">{{ value.start }} ～ {{ value.end }}</p>
-                            <p v-if="months[3] == selectedMonth && key === 'D'">{{ value.start }} ～ {{ value.end }}</p>
-                            <p v-if="months[4] == selectedMonth && key === 'E'">{{ value.start }} ～ {{ value.end }}</p>
-                            <p v-if="months[5] == selectedMonth && key === 'F'">{{ value.start }} ～ {{ value.end }}</p>
-                            <p v-if="months[6] == selectedMonth && key === 'G'">{{ value.start }} ～ {{ value.end }}</p>
-                            <p v-if="months[7] == selectedMonth && key === 'H'">{{ value.start }} ～ {{ value.end }}</p>
-                            <p v-if="months[8] == selectedMonth && key === 'I'">{{ value.start }} ～ {{ value.end }}</p>
-                            <p v-if="months[9] == selectedMonth && key === 'J'">{{ value.start }} ～ {{ value.end }}</p>
-                            <p v-if="months[10] == selectedMonth && key === 'K'">{{ value.start }} ～ {{ value.end }}</p>
-                            <p v-if="months[11] == selectedMonth && key === 'L'">{{ value.start }} ～ {{ value.end }}</p>
+                            <p v-if="months[0] == selectedMonth && key === '0'">{{ value.start }} ～ {{ value.end }}</p>
+                            <p v-if="months[1] == selectedMonth && key === '1'">{{ value.start }} ～ {{ value.end }}</p>
+                            <p v-if="months[2] == selectedMonth && key === '2'">{{ value.start }} ～ {{ value.end }}</p>
+                            <p v-if="months[3] == selectedMonth && key === '3'">{{ value.start }} ～ {{ value.end }}</p>
+                            <p v-if="months[4] == selectedMonth && key === '4'">{{ value.start }} ～ {{ value.end }}</p>
+                            <p v-if="months[5] == selectedMonth && key === '5'">{{ value.start }} ～ {{ value.end }}</p>
+                            <p v-if="months[6] == selectedMonth && key === '6'">{{ value.start }} ～ {{ value.end }}</p>
+                            <p v-if="months[7] == selectedMonth && key === '7'">{{ value.start }} ～ {{ value.end }}</p>
+                            <p v-if="months[8] == selectedMonth && key === '8'">{{ value.start }} ～ {{ value.end }}</p>
+                            <p v-if="months[9] == selectedMonth && key === '9'">{{ value.start }} ～ {{ value.end }}</p>
+                            <p v-if="months[10] == selectedMonth && key === '10'">{{ value.start }} ～ {{ value.end }}</p>
+                            <p v-if="months[11] == selectedMonth && key === '11'">{{ value.start }} ～ {{ value.end }}</p>
                         </div>
                         <i class="el-icon-date" @click="changeDropdown"></i>
                         <div v-if="isDropdownValue" class="dropdown">
@@ -104,6 +104,9 @@ export default {
             Monthly: "<1/1>～<1/31>", //表示用
             selectedAttendance: "全て", //勤怠フィルタリング判断
             isDropdownAttendance: false, //勤怠ドロップダウンリスト
+            countmonth: '', //何月表示
+            countday: '', // 今月の日数表示
+            weekdayCount: 0, //平日日数表示
             filterOption: { //平日休日判定
                 weekday: false,
                 weekend: false,
@@ -124,22 +127,22 @@ export default {
             Attendances: [//出勤判定
                 '全て', '出勤', '休暇'
             ],
-            variables: {
-                A: { start: '1/1', end: '1/31' },
-                B: { start: '2/1', end: '2/28' },
-                C: { start: '3/1', end: '3/31' },
-                D: { start: '4/1', end: '4/30' },
-                E: { start: '5/1', end: '5/31' },
-                F: { start: '6/1', end: '6/30' },
-                G: { start: '7/1', end: '7/31' },
-                H: { start: '8/1', end: '8/31' },
-                I: { start: '9/1', end: '9/30' },
-                J: { start: '10/1', end: '10/31' },
-                K: { start: '11/1', end: '11/30' },
-                L: { start: '12/1', end: '12/31' },
+            variables: {//指定された月の月初と月末表示
+                0: { start: '1/1', end: '1/31' },
+                1: { start: '2/1', end: '2/28' },
+                2: { start: '3/1', end: '3/31' },
+                3: { start: '4/1', end: '4/30' },
+                4: { start: '5/1', end: '5/31' },
+                5: { start: '6/1', end: '6/30' },
+                6: { start: '7/1', end: '7/31' },
+                7: { start: '8/1', end: '8/31' },
+                8: { start: '9/1', end: '9/30' },
+                9: { start: '10/1', end: '10/31' },
+                10: { start: '11/1', end: '11/30' },
+                11: { start: '12/1', end: '12/31' },
             },
-            headers: ['日付', '曜日', '勤休', '出勤', '退勤', '仕事内容'],
-            items: [
+            headers: ['日付', '曜日', '勤休', '出勤', '退勤', '仕事内容'],//ヘッダー表示
+            items: [//勤怠表内容
                 { day: '', youbi: '', workrest: "出勤", startwork: "9:00", endwork: "18:00", note: "" },//この行をテストとする
                 { day: '', youbi: '', workrest: "出勤", startwork: "9:00", endwork: "18:00", note: "" },//この行をテストとする
                 { day: '', youbi: '', workrest: "出勤", startwork: "9:00", endwork: "18:00", note: "" },//この行をテストとする
@@ -177,8 +180,13 @@ export default {
     mounted() {
         this.fetchday();
         this.fetchyoubi();
+        this.updateMonth();
+        this.updateDay();
+        this.updateWeekdayCount();
+        this.updateWeekendCount();
     },
     computed: {
+        //フィルタリング機能
         filteredItems() {
             return this.items.filter(item => {
                 const dayOfWeek = item.youbi;
@@ -199,6 +207,7 @@ export default {
         }
     },
     methods: {
+        //日付データをバックエンドから受け取る
         async fetchday() {
             try {
                 const response = await axios.get('バックエンドのゲットリクエストURL貼る');
@@ -207,7 +216,6 @@ export default {
             } catch(error) {
                 console.error('Error fetching nitisuu value', error);
             }
-
         },
         //曜日データをバックエンドから受け取る
         async fetchyoubi() {
@@ -219,19 +227,53 @@ export default {
                 console.error('Error fetching youbi value', error);
             }
         },
+        //今月が何月かを判断する
+        updateMonth() {
+            var monthval = new Date();
+            var monthlog = monthval.getMonth()+1;
+            this.countmonth = monthlog;
+        },
+        //今月は何日あるかを判断する
+        updateDay() {
+            let dayval = new Date();
+            dayval.setMonth(dayval.getMonth() + 1, 0);
+            this.countday = dayval.getDate();
+        },
+        //今月の出勤日が何日かを判断する
+        updateWeekdayCount() {
+            const currentDate = new Date();
+            const year = currentDate.getFullYear();
+            const month = currentDate.getMonth();
+            const lastDayOfMonth = new Date(year, month + 1, 0).getDate();
+
+            let weekdayCount = 0;
+            for (let day = 1; day <= lastDayOfMonth; day++) {
+                const currentDay = new Date(year, month, day).getDay();
+                // 0は日曜日、6は土曜日なので、平日の場合は0～5の範囲になります
+                if (currentDay >= 1 && currentDay <= 5) {
+                    weekdayCount++;
+                }
+            }
+            this.weekdayCount = weekdayCount;
+        },
+        //画面遷移 基本資料修正画面
         basic_info() {
             this.$router.push('InfoUpdateForm')
         },
+        //何月の勤怠を編集したいときに使うボタンの表示非表示
         changeDropdown() {
             this.isDropdownValue = !this.isDropdownValue;
         },
+        //勤務日と休暇日をフィルタリングする際に使うボタン
         AttendanceDropdown() {
             this.isDropdownAttendance = !this.isDropdownAttendance;
         },
+        //何月の勤怠を編集するか選ぶ
         selectMonth(month) {
             this.selectedMonth = month;
             this.isDropdownValue = false;
         },
+        //勤務日と休暇日をフィルタリングする
         selectAttendance(Attendance) {
             this.selectedAttendance = Attendance;
             this.isDropdownAttendance = false;
@@ -239,12 +281,15 @@ export default {
         confirmback() {
             
         },
+        //画面遷移 社員管理画面
         MemberManage() {
             this.$router.push('MemberManage')
         },
+        //画面遷移 メイン画面
         Employee() {
             this.$router.push('Employee')
         },
+        //勤怠表提出処理
         toggleButtons(clickedButton) {
             this.showButton1 = !this.showButton1;
             this.showButton2 = !this.showButton2;

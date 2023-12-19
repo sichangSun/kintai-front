@@ -55,8 +55,11 @@ export default {
             if (this.value == 'Option3') {
                 this.$router.push('MemberManage')
             }
-            if (this.value == 'Option5') {
+            if(this.value == 'Option4'){
                 this.$router.push('Registration')
+            }
+            if (this.value == 'Option5') {
+                this.$router.push('/')
             }
         }
     },
