@@ -1,16 +1,47 @@
 <template>
   <div>
+        
+          <el-dialog
+            title="提示"
+            :visible.sync="dialogVisible"
+            width="30%"
+            :before-close="handleClose">
+           
+
+            <el-form ref="form" :model="form" label-width="80px">
+              <el-form-item label="区分">
+                <el-input v-model="form.kubun"></el-input>
+              </el-form-item>
+            </el-form>
+
+            <span slot="footer" class="dialog-footer">
+              <el-button @click="dialogVisible = false">取 消</el-button>
+              <el-button type="primary" @click="dayin">确 定</el-button>
+            </span>
+          </el-dialog>
+
     <HeaderMenu_screen/>
     <div>
     <h1>社員管理画面</h1>
+    
       検索：
       <el-input type="text" v-model="employNumber" style="width:350px;" placeholder="名前か社員番号を入力してください" clearable @clear="clearQuery" ref="getValue">
       </el-input>    
       <el-button slot="append" icon="el-icon-search" @click="inquireMember()"></el-button>
       <div>
         <el-button class="btn1" type="primary" @click="manageAll()">一括管理</el-button>
+        <button type="primary">moren</button>
       </div>
-       
+           <!-- <tbody>
+                <tr v-for="(i, index) in tableData" :key="index">
+                   
+                    <td :contenteditable="isContentEditable.toString()" @input="update(tableData, 'number')">{{ tableData.number }}</td>
+                    <td :contenteditable="isContentEditable.toString()" @input="update(tableData, 'kubun')">{{ tableData.kubun }}</td>
+                    <td :contenteditable="isContentEditable.toString()" @input="update(tableData, 'name')">{{ tableData.name }}</td>
+                    <td :contenteditable="isContentEditable.toString()" @input="update(tableData, 'sex')">{{ tableData.sex }}</td>
+                    <td :contenteditable="isContentEditable.toString()" @input="update(tableData, 'note')">{{ tableData.note }}</td>
+                </tr>
+            </tbody> -->
     </div>
     <br>
     <el-table
@@ -26,7 +57,7 @@
     </el-table-column>
 
     <el-table-column
-      prop=""
+      prop="kubun"
       label="区分"
       width="180" align="center">
     </el-table-column>
@@ -51,11 +82,8 @@
     </el-table-column>
 
     <el-table-column label="操作" width="180" align="center">
-    <template slot-scope="scope">
-      <el-button
-          size="mini"
-          @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-          
+    <template v-slot="scope">
+          <el-button type="text" @click="handleEditd(scope.$index, scope.row)">编辑</el-button>
     </template>
     </el-table-column>
   </el-table>
@@ -64,9 +92,9 @@
       <template #edit="{ row }">
         <input v-model="row.number" />
       </template>
-
-    <EditTableColumn prop="kubun" label="区分">
     </EditTableColumn>
+    <EditTableColumn prop="kubun" label="区分">
+    
       <template #edit="{ row }">
         <input v-model="row.kubun" />
       </template>
@@ -108,7 +136,9 @@
   
 </template>
 
+
 <script>
+import axios from 'axios';
 import HeaderMenu_screen from './HeaderMenu_screen.vue';
 
 const mockData = [
@@ -129,21 +159,22 @@ export default {
    return{
     employNumber: "",
     tableData:[],
-     mockData: [
-  {
-    number:123,
-    name:'jjj',
-    sex:'M'
-  },{
-    number:234,
-    name:'kkk',
-    sex:'M'
-  }
-]
-   };
+    form:{
+      kubun:"",
+    },
+    fanHaoZhongZhuan:"",
+
+    
+    
+
+    dialogVisible: false,
+    };
   },
   mounted(){
-    this.tableData = mockData
+
+    axios.get("http://localhost:3010/").then(res => {
+      this.tableData = res.data;
+    })
   }, 
   methods:{
     Employee({ name, y }){
@@ -157,6 +188,20 @@ export default {
     },
     clearQuery(){
       this.tableData = mockData
+    },
+    handleEditd(index,row) {
+      this.dialogVisible = true
+      console.log(index,row);
+      this.fanHaoZhongZhuan=row;
+    },
+    dayin(){
+      let index =this.tableData.findIndex((item) => item.number ===this.fanHaoZhongZhuan.number);
+      const temp = JSON.parse(JSON.stringify(this.tableData))
+      temp[index].kubun = this.form.kubun
+      console.log(this.form.kubun);
+      console.log("tableData",this.tableData)
+      console.log(index);
+      this.tableData = temp
     }
   },
   components: { HeaderMenu_screen }
